@@ -6,6 +6,7 @@ public class playerMovement : MonoBehaviour {
     private Camera gCam;
     private Vector2 mousePos;
     private Rigidbody2D rb;
+    private Vector2 targetPos;
 
     [SerializeField] GameObject player;
     [SerializeField] float moveSpeed;
@@ -23,11 +24,22 @@ public class playerMovement : MonoBehaviour {
         if(Input.GetMouseButtonDown(0))
         {
             mouseHandler();
+
+            targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
+
+        if(Vector3.Distance(transform.position, targetPos) < 1)
+        {
+            rb.velocity = Vector3.zero;
+        }
+
+        Debug.Log("Target Position: " +targetPos);
+        Debug.Log("Player Position: " +transform.position);
+
 	
 	}
 
-    private void mouseHandler()
+    private Vector3 mouseHandler()
     {
         RaycastHit2D hit = Physics2D.Raycast(gCam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         if(hit.collider != null)
@@ -55,8 +67,12 @@ public class playerMovement : MonoBehaviour {
 
                 Debug.DrawLine(pos, dir);
 
+                return dir;
+
             }
         }
+
+        return Vector3.zero;
     
     }
 }
