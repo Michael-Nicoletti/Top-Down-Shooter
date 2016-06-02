@@ -10,6 +10,7 @@ public class playerMovement : MonoBehaviour {
     private float timeToFire;
 	private GameObject tempHolder;
     private objectPool oP;
+    private int health = 10;
 
     [SerializeField] GameObject player;
     [SerializeField] GameObject bullet;
@@ -26,7 +27,7 @@ public class playerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetButtonDown("Fire1"))
         {
             mouseHandler();
 
@@ -36,6 +37,12 @@ public class playerMovement : MonoBehaviour {
         if(Vector3.Distance(transform.position, targetPos) < 1)
         {
             rb.velocity = Vector3.zero;
+        }
+
+        if(health <= 0)
+        {
+            gameStats.setDead();
+            Application.LoadLevel(2);
         }
 
         timeToFire--;
@@ -60,11 +67,11 @@ public class playerMovement : MonoBehaviour {
                 rb.velocity = Vector3.zero;
                 /*Vector3 targetPosition = gCam.ScreenToWorldPoint(Input.mousePosition);
 
-                
-
                 Debug.Log(targetPosition);
 
                 Debug.DrawLine(targetPosition, player.transform.position);*/
+
+                rb.rotation = 0;
 
                 Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
                 Vector3 dir = Input.mousePosition - pos;
@@ -105,5 +112,19 @@ public class playerMovement : MonoBehaviour {
 
         return Vector3.zero;
     
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "enemyBullet")
+        {
+            col.gameObject.SetActive(false);
+            health--;
+        }
+    }
+
+    public int returnHealth()
+    {
+        return health;
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//http://answers.unity3d.com/questions/765574/can-someone-just-post-a-generic-object-pool-script.html
 
 public class objectPool : MonoBehaviour {
 

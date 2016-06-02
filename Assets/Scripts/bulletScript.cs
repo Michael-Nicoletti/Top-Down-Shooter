@@ -14,7 +14,7 @@ public class bulletScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-	
+	    
 	}
 
     public void fireBullet()
@@ -22,6 +22,12 @@ public class bulletScript : MonoBehaviour {
         //Destroy(gameObject, 3);
         Vector2 force = transform.right * velocity;
         GetComponent<Rigidbody2D>().AddForce(force);
-	
+        StartCoroutine(WaitToHide());
+    }
+
+    IEnumerator WaitToHide()
+    {
+        yield return new WaitForSeconds(2);
+        gameObject.SetActive(false);
     }
 }
